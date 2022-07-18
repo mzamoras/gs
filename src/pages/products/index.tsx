@@ -102,6 +102,7 @@ function ProductsPage() {
     position: 'absolute',
     left: '50%',
     bottom: 0,
+    right: 0,
     top: 0,
   };
 
@@ -109,7 +110,6 @@ function ProductsPage() {
     ...boxAbsolute,
     left: '50%',
     right: 0,
-    bottom: 0,
     backgroundImage: "url('https://source.unsplash.com/random/?warehouse')",
   };
 
