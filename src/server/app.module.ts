@@ -8,18 +8,13 @@ import { ProductsModule } from './products/products.module';
 import { AttributesModule } from './attributes/attributes.module';
 import { ProductAttributesModule } from './product-attributes/product-attributes.module';
 import { AttributesOptionsModule } from './attributes-options/attributes-options.module';
+import { PostgresDatasource } from './database/datasource';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'postgres',
+      ...PostgresDatasource.options,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
     }),
     CategoriesModule,
     ProductsModule,

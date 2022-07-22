@@ -1,5 +1,5 @@
-import { Attribute } from 'src/server/attributes/entities/attribute.entity';
-import { Product } from 'src/server/products/entities/product.entity';
+import { Attribute } from '../../attributes/entities/attribute.entity';
+import { Product } from '../../products/entities/product.entity';
 import {
   Column,
   Entity,

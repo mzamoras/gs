@@ -23,7 +23,11 @@ export class CategoriesService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    // return `This action returns a #${id} category`;
+    return this.categoryRepository.find({
+      where: { id },
+      relations: ['attributes', 'attributes.options'],
+    });
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {

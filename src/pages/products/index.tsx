@@ -7,23 +7,10 @@ import Box from '@mui/material/Box';
 import { getProducts, getCategories } from 'src/frontend/utilities/fetchers';
 import Layout from '../../frontend/components/layout/Layout';
 import ProductItem from '../../frontend/components/pages/ProductItem';
-
-export async function getServerSideProps(context) {
-  console.log(context);
-  const res = await fetch(`${URL}/products/1`);
-  const data = await res.json();
-  return { props: { name: data } };
-}
+import { Product } from '@globalTypes/global';
+import Link from 'next/link';
 
 const URL = 'http://localhost:3000/api';
-type Product = {
-  id?: number;
-  name: string;
-  sku: string;
-  brand: string;
-  price: number;
-  category?: number;
-};
 
 const sendProduct = async (product: Product) => {
   return await fetch(`${URL}/products`, {
@@ -35,12 +22,6 @@ const sendProduct = async (product: Product) => {
   });
 };
 
-// const getProducts = async () => {
-//   const response = await fetch(`${URL}/products`);
-//   const data = await response.json();
-//   return data;
-// };
-
 const newProductInit = () => ({
   name: '',
   sku: '',
@@ -49,10 +30,19 @@ const newProductInit = () => ({
   category: 1,
 });
 
-function ProductsPage() {
+type Props = {
+  props: {
+    products: Product[];
+  };
+};
+
+function ProductsPage({ props }: Props) {
+  const { products } = props;
   const [productsList, setProductsList] = useState([]);
+  const [filteredProductsList, setFilteredProductsList] = useState(products);
   const [categoriesList, setCategoriesList] = useState([]);
   const [newProduct, setNewProduct] = useState(newProductInit());
+  const [search, setSearch] = useState('');
   // const [productName, setProductName] = useState('');
   // const [productSKU, setProductSKU] = useState('');
   // const [productBrand, setProductBrand] = useState('');
@@ -73,6 +63,16 @@ function ProductsPage() {
     setNewProduct({ ...newProduct, category: e.target.value });
   };
 
+  const handleSetSearch = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    setFilteredProductsList(
+      products.filter((product) =>
+        product.name.toLowerCase().includes(value.toLowerCase()),
+      ),
+    );
+  };
+
   const currentCatAttributes = categoriesList.findIndex(
     (c) => c.id === newProduct.category,
   );
@@ -90,9 +90,6 @@ function ProductsPage() {
       });
   };
   useEffect(() => {
-    getProducts().then((data) => {
-      setProductsList([...data]);
-    });
     getCategories().then((data) => {
       setCategoriesList([...data]);
     });
@@ -110,93 +107,69 @@ function ProductsPage() {
     ...boxAbsolute,
     left: '50%',
     right: 0,
-    backgroundImage: "url('https://source.unsplash.com/random/?warehouse')",
+    backgroundImage:
+      "url('https://images.unsplash.com/photo-1624023749602-02bc0cda1278?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80')",
+    // backgroundImage: "url('https://source.unsplash.com/random/?warehouse')",
   };
 
   return (
-    <div>
-      <Box sx={boxStyle} />
-      <Box sx={{ ...boxAbsolute, left: 0, right: '50%' }}>
+    <Box
+      sx={{
+        top: 0,
+        bottom: 0,
+        left: 240,
+        right: 0,
+        position: 'absolute',
+      }}
+    >
+      <Box
+        sx={{
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: '50%',
+          position: 'absolute',
+          overflowY: 'auto',
+        }}
+      >
+        <div>
+          <TextField
+            label="Search"
+            variant="outlined"
+            onChange={handleSetSearch}
+          />
+        </div>
+        <h1>Products {filteredProductsList.length} products </h1>
+        <div>
+          <Link href="/products/new">New Product</Link>
+        </div>
         <List>
-          {productsList.map((product) => {
+          {filteredProductsList.map((product) => {
             return <ProductItem key={product.id} product={product} />;
           })}
         </List>
       </Box>
-      <h1>Products</h1>
-      <List>
-        {/* {categoriesList.map((category) => {
-          return (
-            <ListItem key={category.id}>
-              <span>{category.name}</span>
-            </ListItem>
-          );
-        })} */}
-        {/* {productsList.map((product) => {
-          return <ProductItem key={product.id} product={product} />;
-        })} */}
-      </List>
-      <button onClick={getProducts}>Get Product</button>
-      <div>
-        <TextField
-          select
-          value={newProduct.category}
-          onChange={setProductCategory}
-        >
-          {categoriesList.map((category) => {
-            return (
-              <MenuItem key={category.id} value={category.id}>
-                {category.name}
-              </MenuItem>
-            );
-          })}
-        </TextField>
-        <TextField
-          label="Name"
-          value={newProduct.name}
-          variant="standard"
-          onChange={setProductName}
-        />
-        <TextField
-          label="Sku"
-          value={newProduct.sku}
-          variant="standard"
-          onChange={setProductSKU}
-        />
-        <TextField
-          label="Brand"
-          value={newProduct.brand}
-          variant="standard"
-          onChange={setProductBrand}
-        />
-        <TextField
-          label="Price"
-          value={newProduct.price}
-          variant="standard"
-          onChange={setProductPrice}
-        />
-      </div>
-      {attributes.map((attr) => {
-        return (
-          <div key={attr.id}>
-            <div>{attr.name}</div>
-            <TextField select onChange={setProductCategory}>
-              {attr.options.map((op) => {
-                return (
-                  <MenuItem key={op.id} value={op.value}>
-                    {op.value}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
-          </div>
-        );
-      })}
-      <button onClick={sendNewProduct}>Send Product</button>
-    </div>
+      <Box
+        sx={{
+          top: 0,
+          bottom: 0,
+          right: 0,
+          left: '50%',
+          position: 'absolute',
+          backgroundRepeat: 'round',
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1624023749602-02bc0cda1278?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80')",
+        }}
+      />
+    </Box>
   );
 }
 
-ProductsPage.getLayout = (page) => <Layout>{page}</Layout>;
+ProductsPage.getInitialProps = async () => {
+  const products = await getProducts();
+  return { props: { products } };
+};
+
+ProductsPage.getLayout = (page) => <Layout title="Products">{page}</Layout>;
 
 export default ProductsPage;

@@ -18,7 +18,12 @@ export class ProductService {
 
   async findAll(): Promise<Product[]> {
     return this.productRepository.find({
-      relations: ['category', 'category.attributes', 'attributes', 'attributes.attribute'],
+      relations: [
+        'category',
+        'category.attributes',
+        'attributes',
+        'attributes.attribute',
+      ],
     });
   }
 

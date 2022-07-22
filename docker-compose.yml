@@ -6,8 +6,11 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres_gila
     volumes:
-      - ./db/db.dump.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+       - ./postgres-data:/var/lib/postgresql/data
+       #- ./db/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+       #- ./db/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
     ports:
       - '5432:5432'
 volumes:

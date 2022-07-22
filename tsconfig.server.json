@@ -5,6 +5,7 @@
     },
     "include": [
         "./src/server/**/*.ts",
+        "./src/seeding/**/*.ts",
         "./src/shared/**/*.ts",
         "./@types/**/*.d.ts"
     ]

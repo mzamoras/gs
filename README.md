@@ -24,7 +24,7 @@
 
 ## Description
 1. docker-compose up
-2. yarn
+2. yarn db:setup
 3. yarn start:dev //For NestJS
 4. yarn start:dev:next // For NextJs
 5. http://localhost/3001/products

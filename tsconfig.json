@@ -26,6 +26,7 @@
     "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -36,13 +37,18 @@
       "@layoutComponents/*": ["./src/frontend/components/layout/*"], 
       "@themes/*": ["./src/frontend/themes/*"], 
       "@utils/*": ["./src/frontend/utilities/*"], 
+      "@globalTypes/*": ["./src/frontend/types/*"], 
       "@pages/*": ["./src/pages/*"], 
     },
   },
   "include": [
     "next-env.d.ts",
     "src/server/**/*.ts",
-    "**/*.tsx"
+    "src/seeding/**/*.ts",
+    "src/frontend/types/**/*.ts",
+    "**/*.tsx",
+    "ormconfig.ts",  
+    "seeding_ormconfig.ts",
   ],
   "exclude": [
     "node_modules"

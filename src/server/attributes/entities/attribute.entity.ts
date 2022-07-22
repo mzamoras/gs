@@ -1,7 +1,7 @@
-import { AttributesOption } from 'src/server/attributes-options/entities/attributes-option.entity';
-import { Category } from 'src/server/categories/entities/category.entity';
-import { ProductAttribute } from 'src/server/product-attributes/entities/product-attribute.entity';
-import { Product } from 'src/server/products/entities/product.entity';
+import { AttributesOption } from '../../attributes-options/entities/attributes-option.entity';
+import { Category } from '../../categories/entities/category.entity';
+import { ProductAttribute } from '../../product-attributes/entities/product-attribute.entity';
+import { Product } from '../../products/entities/product.entity';
 import {
   Entity,
   Column,
